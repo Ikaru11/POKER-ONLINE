@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Capsa Banting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--felt:#21604a;--wood:#3a2a20;--woodline:#241912;--brass:#dcb45f;--ink:#f3f4ee;--soft:rgba(243,244,238,.64);--line:rgba(243,244,238,.45);--btn:#f3f4ee;--btnink:#17372b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--felt:#153d30;color-scheme:dark}}
+:root[data-theme="dark"]{--felt:#153d30;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background-color:var(--felt);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");color:var(--ink);font:16px/1.45 Karla,system-ui,sans-serif;min-height:100vh;padding:18px 16px 190px;max-width:720px;margin:0 auto}
+h1{font:700 38px/1 "Bodoni Moda",Georgia,serif;margin:6px 0 8px}
+h2{font:500 20px/1.2 "Bodoni Moda",Georgia,serif;margin:22px 0 8px}
+p{margin:0 0 10px;color:var(--soft);max-width:60ch}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.go{background:var(--btn);color:var(--btnink);border:0;border-radius:4px;padding:13px 18px;font-weight:700;width:100%;margin-bottom:8px}
+.go:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font-weight:700;width:100%}
+.ghost:disabled{opacity:.4;cursor:not-allowed}
+.link{background:none;border:0;padding:6px 0;text-decoration:underline;color:var(--soft)}
+.tray{background:var(--wood);border-bottom:3px solid var(--woodline);border-radius:6px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.tray small{display:block;color:var(--soft)}
+.code{font:700 32px/1 "Bodoni Moda",Georgia,serif;letter-spacing:.14em}
+.name{font:500 19px/1.2 "Bodoni Moda",Georgia,serif;word-break:break-word}
+.bal{color:var(--soft);font-size:15px;font-variant-numeric:tabular-nums}.bal b{color:var(--ink)}
+.err{color:#ffb3a8;margin:8px 0}.up{color:#9be7b9}.dn{color:#ffb3a8}
+.status{padding:10px 14px;border:1px solid var(--line);border-radius:4px;margin:8px 0}
+.opps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.op{padding:10px;border:1px solid rgba(243,244,238,.2);border-left:3px solid transparent;border-radius:4px}
+.op.turn,.me.turn{border-left-color:var(--brass);background:rgba(0,0,0,.16)}
+.table{min-height:120px;border:2px solid var(--brass);border-radius:60px 60px 12px 12px;margin:14px 0;padding:12px;text-align:center;box-shadow:0 0 0 4px rgba(220,180,95,.2)}
+.hand{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 4px;min-height:60px}
+.table .hand{justify-content:center}
+.cd{width:42px;height:60px;border-radius:6px;background:#f6f5ef;color:#1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;line-height:1.1;box-shadow:0 2px 3px rgba(0,0,0,.45);border:0;padding:0}
+.cd b{font-size:18px}.cd span{font-size:17px}.cd.rd{color:#b3262d}
+button.cd.sel{transform:translateY(-12px);outline:3px solid var(--brass)}
+.mini .cd{width:30px;height:42px}.mini .cd b{font-size:13px}.mini .cd span{font-size:12px}
+.me{padding:10px;border-left:3px solid transparent;margin-top:8px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--wood);border-top:3px solid var(--woodline);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar>div{max-width:720px;margin:0 auto}
+.acts{display:grid;grid-template-columns:2fr 1fr;gap:8px}
+label{display:block;color:var(--soft);font-size:14px;margin-bottom:4px}
+select,input{font:inherit;color:var(--ink);background:rgba(0,0,0,.22);border:0;border-bottom:2px solid var(--line);border-radius:4px 4px 0 0;padding:10px 12px;width:100%}
+select option{color:#111}
+input.codein{font:700 28px "Bodoni Moda",Georgia,serif;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid rgba(243,244,238,.18)}
+</style></head><body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+/* Aturan yang bisa diubah. POKER_PTS = poin untuk tiap kartu 2 yang tersisa di tangan (bukan 1) */
+const HAND=13,WIN_BONUS=-10,DOUBLE_AT=7,POKER_PTS=10;
+const SU=['♦','♣','♥','♠'],RK=['3','4','5','6','7','8','9','10','J','Q','K','A','2'];
+let tk=null,pg=null;
+let role='',mode='home',peer=null,conns={},hconn=null,S=null,V=null,me='',nm='',code='',rounds=5,sel=[],err='',busy=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rv=r=>RK.indexOf(r)+3,pw=c=>rv(c.r)*4+SU.indexOf(c.s);
+const mk=()=>{const d=[];SU.forEach(s=>RK.forEach(r=>d.push({r,s,id:r+s})));for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}return d};
+const gen=()=>{const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let c='';for(let i=0;i<4;i++)c+=A[Math.floor(Math.random()*A.length)];return c};
+function combo(cs){
+  const n=cs.length;if(![1,2,3,5].includes(n))return null;
+  const v=cs.map(c=>rv(c.r)).sort((a,b)=>a-b),mx=Math.max(...cs.map(pw));
+  if(n<5)return v.every(x=>x===v[0])?{t:n,k:mx}:null;
+  const fl=cs.every(c=>c.s===cs[0].s),st=new Set(v).size===5&&v[4]-v[0]===4&&v[4]<=14,cnt={};
+  v.forEach(x=>cnt[x]=(cnt[x]||0)+1);const cv=Object.values(cnt).sort().join('');
+  if(st&&fl)return{t:5,k:5e4+mx};
+  if(cv==='14')return{t:5,k:4e4+v[2]*4};
+  if(cv==='23')return{t:5,k:3e4+v[2]*4};
+  if(fl)return{t:5,k:2e4+mx};
+  if(st)return{t:5,k:1e4+mx};
+  return null}
+const cname=c=>!c?'':c.t===1?'Single':c.t===2?'Pair':c.t===3?'Triple':c.k>=5e4?'Straight flush':c.k>=4e4?'Empat kartu sama':c.k>=3e4?'Full house':c.k>=2e4?'Flush':'Straight';
+const beats=(a,b)=>a.t===b.t&&a.k>b.k;
+const pokers=h=>h.filter(c=>c.r==='2').length;
+/* ---------- efek suara (dibuat langsung di browser, tanpa file audio) ---------- */
+let AC=null,mute=false;try{mute=localStorage.getItem('cbm')==='1'}catch(e){}
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+addEventListener('pointerdown',()=>ac());
+function tone(f,t,d,type,v,sl){const c=ac();if(!c||mute)return;const o=c.createOscillator(),g=c.createGain(),s=c.currentTime+t;o.type=type||'sine';o.frequency.setValueAtTime(f,s);if(sl)o.frequency.exponentialRampToValueAtTime(sl,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.2,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+.02)}
+function noise(t,d,v,fq){const c=ac();if(!c||mute)return;const n=Math.floor(c.sampleRate*d),b=c.createBuffer(1,n,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type='bandpass';f.frequency.value=fq;g.gain.value=v;s.connect(f);f.connect(g);g.connect(c.destination);s.start(c.currentTime+t)}
+const SFX={tap:()=>tone(700,0,.05,'triangle',.1),play:()=>{noise(0,.09,.5,1600);tone(170,0,.1,'sine',.3,80)},deal:()=>[0,.08,.16,.24].forEach(t=>noise(t,.06,.35,2200)),pass:()=>tone(320,0,.14,'sine',.15,200),turn:()=>{tone(660,0,.12,'sine',.18);tone(880,.12,.2,'sine',.18)},win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.25,'triangle',.2)),lose:()=>[392,330,262].forEach((f,i)=>tone(f,i*.16,.3,'sawtooth',.08)),err:()=>tone(150,0,.18,'square',.1),end:()=>[392,523,659].forEach((f,i)=>tone(f,i*.14,.3,'triangle',.18))};
+function sfx(n){if(mute)return;try{ac();SFX[n]&&SFX[n]()}catch(e){}}
+function tgm(){mute=!mute;try{localStorage.setItem('cbm',mute?'1':'0')}catch(e){}if(!mute)sfx('tap');render()}
+function fx(p,n){
+  if(!n||!p)return;const mi=n.players.findIndex(x=>x.id===me);
+  if(!p||p.phase!==n.phase||p.round!==n.round){
+    if(n.phase==='play')sfx('deal');
+    else if(n.phase==='roundend'){const w=(n.res||[]).find(x=>x.win);sfx(w&&mi>=0&&w.name===n.players[mi].name?'win':'lose')}
+    else if(n.phase==='over'){const r=n.players.slice().sort((a,b)=>a.score-b.score);sfx(r[0].id===me?'win':'end')}
+    return}
+  if(n.phase==='play'){
+    const ps=p.table?p.table.cards.map(c=>c.id).join():'',ns=n.table?n.table.cards.map(c=>c.id).join():'';
+    if(ns&&ns!==ps)sfx('play');
+    else if(n.players.some((x,i)=>x.passed&&p.players[i]&&!p.players[i].passed))sfx('pass');
+    if(n.turn===mi&&p.turn!==mi)setTimeout(()=>sfx('turn'),ns&&ns!==ps?220:0)}}
+/* ---------- host: logika game ---------- */
+function view(id){return{phase:S.phase,round:S.round,rounds:S.rounds,turn:S.turn,must:S.must,res:S.res,msg:S.msg,pause:S.pause,
+  table:S.table?{cards:S.table.cards,by:S.table.by,name:cname(S.table.cb)}:null,
+  players:S.players.map(p=>({id:p.id,name:p.name,score:p.score,n:p.hand.length,passed:p.passed,on:p.on,hand:(p.id===id||S.phase==='roundend')?p.hand:null}))}}
+function bc(){const o=V;V=view('host');fx(o,V);render();Object.keys(conns).forEach(id=>{try{conns[id].send({t:'s',s:view(id)})}catch(e){}})}
+function tell(id,m){if(id==='host'){err=m.m;sfx('err');render()}else if(conns[id])try{conns[id].send(m)}catch(e){}}
+function startRound(leaderId){
+  const d=mk();S.round++;S.table=null;S.res=[];S.msg='';
+  S.players.forEach(p=>{p.hand=d.splice(0,HAND).sort((a,b)=>pw(a)-pw(b));p.passed=false});
+  if(S.first){let bi=0,bc_=1e9;S.players.forEach((p,i)=>{if(pw(p.hand[0])<bc_){bc_=pw(p.hand[0]);bi=i}});S.turn=bi;S.must=S.players[bi].hand[0].id;S.first=false}
+  else{S.turn=Math.max(0,S.players.findIndex(p=>p.name===leaderId));S.must=null}
+  S.phase='play'}
+function nextTurn(){
+  const n=S.players.length;let i=S.turn;
+  for(let k=0;k<n+1;k++){i=(i+1)%n;const p=S.players[i];
+    if(i===S.table.by){S.table=null;S.players.forEach(x=>x.passed=false);S.turn=i;break}
+    if(p.on&&!p.passed){S.turn=i;break}}}
+function autoMove(){const i=S.turn,p=S.players[i];if(S.table)doPass(i);else{const c=p.hand[0];doPlay(i,[c],combo([c]))}}
+function doPass(i){S.players[i].passed=true;nextTurn()}
+function doPlay(i,cs,cb){
+  const p=S.players[i];p.hand=p.hand.filter(c=>!cs.includes(c));
+  if(S.must&&cs.some(c=>c.id===S.must))S.must=null;
+  S.table={cards:cs,by:i,cb};S.players.forEach(x=>x.passed=false);
+  if(!p.hand.length)endRound(i);else{S.turn=i;nextTurn()}}
+function endRound(w){
+  S.phase='roundend';S.winId=S.players[w].name;S.turn=-1;S.res=[];
+  S.players.forEach((p,i)=>{let pts,k=pokers(p.hand),n=p.hand.length;
+    if(i===w)pts=WIN_BONUS;else{const o=n-k;pts=(n>=DOUBLE_AT?o*2:o)+k*POKER_PTS}
+    p.score+=pts;S.res.push({name:p.name,left:n,pk:i===w?0:k,pts,win:i===w})})}
+function handle(id,d){
+  const i=S.players.findIndex(x=>x.id===id),p=S.players[i];
+  if(d.t==='join')return joinReq(id,d);
+  if(!p)return tell(id,{t:'out',m:'Kamu sudah tidak ada di room. Gabung lagi dengan kode dan nama yang sama.'});
+  p.seen=Date.now();
+  if(!p.on){p.on=true;p.offAt=0;resume();bc()}
+  if(d.t==='ping')return;
+  if(S.pause&&(d.t==='play'||d.t==='pass'))return tell(id,{t:'err',m:'Game dijeda, menunggu pemain lain terhubung kembali.'});
+  if(d.t==='end'&&id==='host'&&S.phase==='play'){S.phase='over';S.msg='Game diakhiri oleh host.';return bc()}
+  if(d.t==='start'&&id==='host'&&S.players.length>=2&&(S.phase==='lobby'||S.phase==='over')){pruneOff();if(S.players.length<2)return bc();S.players.forEach(x=>x.score=0);S.gone={};S.round=0;S.first=true;startRound();return bc()}
+  if(d.t==='next'&&id==='host'&&S.phase==='roundend'){pruneOff();if(S.players.length<2){S.phase='over';S.msg='Pemain kurang dari 2, game selesai.'}else if(S.round>=S.rounds)S.phase='over';else startRound(S.winId);return bc()}
+  if(d.t==='pass'&&S.phase==='play'&&S.turn===i){if(!S.table)return tell(id,{t:'err',m:'Kamu yang memulai, tidak boleh pass.'});doPass(i);return bc()}
+  if(d.t==='play'&&S.phase==='play'&&S.turn===i){
+    const ids=Array.isArray(d.ids)?d.ids:[],cs=ids.map(x=>p.hand.find(c=>c.id===x));
+    if(!cs.length||cs.some(c=>!c)||new Set(ids).size!==ids.length)return tell(id,{t:'err',m:'Kartu tidak valid.'});
+    const cb=combo(cs);if(!cb)return tell(id,{t:'err',m:'Kombinasi tidak valid.'});
+    if(S.table&&!beats(cb,S.table.cb))return tell(id,{t:'err',m:'Harus kombinasi sejenis yang lebih tinggi.'});
+    if(S.must&&!ids.includes(S.must))return tell(id,{t:'err',m:'Pertama kali wajib memakai kartu terendah ('+S.must+').'});
+    doPlay(i,cs,cb);bc()}}
+function leaveSeat(i){
+  const p=S.players[i];
+  if(S.phase==='play'){p.on=false;p.offAt=Date.now();if(S.players.filter(x=>x.on).length<2)S.pause=true}
+  else{S.gone[p.name.toLowerCase()]={score:p.score};S.players.splice(i,1)}}
+function pruneOff(){for(let i=S.players.length-1;i>=0;i--)if(!S.players[i].on)leaveSeat(i)}
+function resume(){if(S.pause&&S.players.filter(x=>x.on).length>=2)S.pause=false}
+function joinReq(id,d){
+  const nmv=String(d.name||'Pemain').trim().slice(0,14)||'Pemain',key=nmv.toLowerCase(),now=Date.now();
+  const old=S.players.find(x=>x.name.toLowerCase()===key);
+  if(old){
+    const alive=old.id==='host'||(old.on&&conns[old.id]&&conns[old.id].open&&now-old.seen<6000);
+    if(alive)return tell(id,{t:'err',m:'Nama itu sedang dipakai pemain yang masih terhubung. Pakai nama lain, atau coba lagi beberapa detik.'});
+    try{conns[old.id]&&conns[old.id].close()}catch(e){}
+    delete conns[old.id];old.id=id;old.on=true;old.offAt=0;old.seen=now;resume();return bc()}
+  if(!['lobby','roundend','over'].includes(S.phase))return tell(id,{t:'err',m:'Game sedang berjalan. Kamu bisa bergabung di ruang tunggu antar ronde.'});
+  if(S.players.length>=4)return tell(id,{t:'err',m:'Room penuh (maksimal 4 pemain).'});
+  const g=S.gone[key];if(g)delete S.gone[key];
+  S.players.push({id,name:nmv,score:g?g.score:0,hand:[],passed:false,on:true,seen:now,offAt:0});return bc()}
+function drop(id){const i=S.players.findIndex(x=>x.id===id);if(i<0)return;delete conns[id];leaveSeat(i);bc()}
+function tick(){
+  if(!S||role!=='host')return;const now=Date.now();let ch=false;
+  for(let i=S.players.length-1;i>=0;i--){const p=S.players[i];if(p.id!=='host'&&p.on&&now-p.seen>10000){leaveSeat(i);ch=true}}
+  if(S.phase==='play'&&!S.pause&&S.turn>=0){const p=S.players[S.turn];if(p&&!p.on&&now-p.offAt>8000){autoMove();ch=true}}
+  if(ch)bc()}
+/* ---------- koneksi ---------- */
+function hostGo(n){
+  if(n===undefined){nm=$('nm').value.trim()||'Host';rounds=+$('rd').value;busy=true;err='';render();n=0}
+  code=gen();peer=new Peer('bjrm-'+code+'c');
+  peer.on('open',()=>{role='host';me='host';mode='game';busy=false;
+    S={phase:'lobby',round:0,rounds,first:true,table:null,turn:-1,must:null,res:[],msg:'',winId:'',pause:false,gone:{},players:[{id:'host',name:nm,score:0,hand:[],passed:false,on:true}]};bc();if(!tk)tk=setInterval(tick,1500)});
+  peer.on('connection',c=>{conns[c.peer]=c;c.on('data',d=>handle(c.peer,d));c.on('close',()=>drop(c.peer))});
+  peer.on('error',e=>{if(e.type==='unavailable-id'&&n<5)hostGo(n+1);else{err='Gagal membuat room ('+e.type+'). Coba lagi.';busy=false;mode='host';render()}})}
+function joinGo(){
+  code=$('cd').value.trim().toUpperCase();nm=$('nm').value.trim();
+  if(code.length<4||!nm){err='Isi kode room dan nama dulu.';render();return}
+  busy=true;err='';render();peer=new Peer();
+  peer.on('open',id=>{me=id;hconn=peer.connect('bjrm-'+code+'c',{reliable:true});
+    hconn.on('open',()=>{hconn.send({t:'join',name:nm});if(pg)clearInterval(pg);pg=setInterval(()=>{try{hconn.open&&hconn.send({t:'ping'})}catch(e){}},3000)});
+    hconn.on('data',onData);
+    hconn.on('close',()=>{if(role==='client')leave('Koneksi ke host terputus. Gabung lagi dengan kode dan nama yang sama.','join')})});
+  peer.on('error',e=>{err=e.type==='peer-unavailable'?'Room tidak ditemukan. Cek lagi kodenya.':'Gagal tersambung ('+e.type+').';busy=false;role='';mode='join';render()})}
+function onData(d){
+  if(d.t==='s'){role='client';busy=false;mode='game';err='';const o=V;V=d.s;fx(o,V);render()}
+  else if(d.t==='err'){err=d.m;sfx('err');busy=false;if(role!=='client')mode='join';render()}else if(d.t==='out')leave(d.m,'join')}
+function act(t,ids){const m={t,ids};err='';if(role==='host')handle('host',m);else if(hconn)hconn.send(m);if(t==='play'||t==='pass')sel=[]}
+function leave(msg,m){try{peer&&peer.destroy()}catch(e){}clearInterval(pg);clearInterval(tk);pg=tk=null;peer=null;conns={};hconn=null;role='';mode=m||'home';S=V=null;sel=[];err=msg||'';busy=false;render()}
+const go=m=>{mode=m;err='';render()};
+const tg=id=>{sel=sel.includes(id)?sel.filter(x=>x!==id):sel.concat(id);sfx('tap');render()};
+/* ---------- tampilan ---------- */
+const cd=(c,b)=>{const r=c.s==='♥'||c.s==='♦'?' rd':'',x=`<b>${c.r}</b><span>${c.s}</span>`;return b?`<button class="cd${r}${sel.includes(c.id)?' sel':''}" aria-label="${c.r} ${c.s}" onclick="tg('${c.id}')">${x}</button>`:`<div class="cd${r}">${x}</div>`};
+const hand=(h,cls)=>`<div class="hand ${cls||''}">${h.map(c=>cd(c)).join('')}</div>`;
+const opts=(a,c)=>a.map(v=>`<option${v===c?' selected':''}>${v}</option>`).join('');
+const errH=()=>err?`<div class="err">${esc(err)}</div>`:'';
+function render(){
+  const a=$('app');let h='';
+  if(mode==='home'||(mode==='host'&&!V)||(mode==='join'&&!V)){
+    if(mode==='home')h=`<h1>Capsa banting</h1><p>Main bareng 2 sampai 4 orang dengan kartu digital. Satu pemain jadi host dan membuat room, yang lain masuk dengan kode.</p>${errH()}<button class="go" onclick="go('host')">Buat room (jadi host)</button><button class="go" onclick="go('join')">Gabung room</button>`;
+    else if(mode==='host')h=`<h1>Buat room</h1><div class="form"><div><label for="nm">Nama kamu</label><input id="nm" value="${esc(nm)}" maxlength="14"></div><div><label for="rd">Jumlah ronde</label><select id="rd">${opts([3,5,10],rounds)}</select></div></div>${errH()}<button class="go" onclick="hostGo()"${busy?' disabled':''}>${busy?'Membuat room...':'Buat room'}</button><button class="link" onclick="go('home')">Kembali</button>`;
+    else h=`<h1>Gabung room</h1><p>Pernah keluar atau terputus? Masukkan kode dan nama yang sama untuk kembali ke permainan. Pemain baru bisa masuk di ruang tunggu antar ronde.</p><div class="form"><div><label for="cd">Kode room dari host</label><input id="cd" class="codein" maxlength="4" autocomplete="off" value="${esc(code)}"></div><div><label for="nm">Nama kamu</label><input id="nm" value="${esc(nm)}" maxlength="14"></div></div>${errH()}<button class="go" onclick="joinGo()"${busy?' disabled':''}>${busy?'Menyambung...':'Gabung'}</button><button class="link" onclick="go('home')">Kembali</button>`;
+    a.innerHTML=h;return}
+  if(!V){a.innerHTML='<p>Menyambung...</p>';return}
+  const P=V.players,ph=V.phase,mi=P.findIndex(p=>p.id===me),mp=P[mi]||{hand:[],score:0},myTurn=ph==='play'&&V.turn===mi,host=role==='host';
+  h+=`<div class="tray"><div><small>Kode room</small><span class="code">${esc(code)}</span></div><div style="text-align:right"><small>${ph==='lobby'?'Ruang tunggu':'Ronde '+V.round+' dari '+V.rounds}</small><span class="bal">${P.length} dari 4 pemain</span></div></div>`;
+  let bar='';
+  if(ph==='lobby'){
+    h+=`<p>Minta temanmu memilih Gabung room dan memasukkan kode di atas.</p>`+P.map(p=>`<div class="row"><span class="name">${esc(p.name)}${p.id===me?' (kamu)':''}</span></div>`).join('');
+    h+=`<h2>Aturan singkat</h2><p>Tiap pemain dapat ${HAND} kartu. Urutan kartu 3 sampai K, lalu A, lalu 2 tertinggi. Jenis ♦ lalu ♣ lalu ♥ lalu ♠ makin tinggi. Kombinasi: single, pair, triple, dan 5 kartu (straight, flush, full house, empat kartu sama, straight flush). Pemain dengan kartu terendah mulai dengan kartu itu, lalu gantian membanting kombinasi sejenis yang lebih tinggi atau pass. Yang kartunya habis duluan dapat ${WIN_BONUS} poin. Pemain lain kena 1 poin untuk tiap kartu biasa yang tersisa (dikali 2 kalau total sisa ${DOUBLE_AT} kartu atau lebih). Tiap kartu 2 (poker) yang masih dipegang bernilai ${POKER_PTS} poin, bukan 1. Poin terendah di akhir menang.</p>`;
+    bar=host?`<button class="go" onclick="act('start')"${P.length>=2?'':' disabled'}>${P.length>=2?'Mulai main ('+P.length+' pemain)':'Menunggu pemain lain...'}</button>`:`<div class="status">Menunggu host memulai...</div>`}
+  else if(ph==='over'){
+    const r=P.slice().sort((x,y)=>x.score-y.score);
+    h+=`<h1>Hasil akhir</h1>${V.msg?`<p>${esc(V.msg)}</p>`:''}`+r.map((p,i)=>`<div class="row"><span class="name">${i+1}. ${esc(p.name)}${p.id===me?' (kamu)':''}</span><b>${p.score} poin</b></div>`).join('')+`<p style="margin-top:14px">Poin terendah menang.</p>`;
+    bar=host?`<button class="go" onclick="act('start')"${P.length>=2?'':' disabled'}>Main lagi dari awal</button>`:`<div class="status">Menunggu host...</div>`}
+  else{
+    h+=errH();
+    h+=`<div class="opps">${P.map((p,i)=>p.id===me?'':`<div class="op${ph==='play'&&i===V.turn?' turn':''}"><div class="name">${esc(p.name)}</div><div class="bal"><b>${p.n}</b> kartu, skor <b>${p.score}</b></div><div class="bal">${!p.on?'Terputus':ph==='play'&&i===V.turn?'Giliran...':p.passed?'Pass':''}</div>${ph==='roundend'&&p.hand&&p.hand.length?hand(p.hand,'mini'):''}</div>`).join('')}</div>`;
+    if(ph==='play')h+=`<div class="table">${V.table?`<div class="bal"><b>${esc(P[V.table.by].name)}</b>: ${V.table.name}</div>${hand(V.table.cards)}`:`<div class="bal">Meja kosong, <b>${esc(P[V.turn].name)}</b> memulai.</div>`}</div>`;
+    if(ph==='roundend'){const w=V.res.find(x=>x.win);h+=`<h2>Ronde ${V.round} selesai</h2><p><b>${esc(w?w.name:'')}</b> kartunya habis duluan.</p>`+V.res.map(x=>`<div class="row"><span>${esc(x.name)}${x.win?'':' (sisa '+x.left+(x.pk?', '+x.pk+' kartu 2':'')+')'}</span><b class="${x.pts<0?'up':'dn'}">${x.pts>0?'+':''}${x.pts}</b></div>`).join('')+`<h2>Skor sementara</h2>`+P.map(p=>`<div class="row"><span>${esc(p.name)}</span><b>${p.score}</b></div>`).join('')}
+    h+=`<div class="me${myTurn?' turn':''}"><div class="name">${esc(mp.name||nm)} (kamu) <span class="bal">skor <b>${mp.score}</b></span></div>${mp.hand?`<div class="hand">${mp.hand.map(c=>cd(c,ph==='play')).join('')}</div>`:''}</div>`;
+    if(ph==='play'){
+      const cs=sel.map(id=>(mp.hand||[]).find(c=>c.id===id)).filter(Boolean),cb=cs.length?combo(cs):null;
+      if(V.pause)bar=`<div class="status">Game dijeda. Menunggu pemain terhubung kembali...</div>`+(host?`<button class="ghost" onclick="act('end')">Akhiri game</button>`:'');else if(myTurn)bar=`<div class="bal" style="margin-bottom:8px">${V.must&&!V.table?'Wajib memakai kartu <b>'+esc(V.must)+'</b>. ':''}${cs.length?(cb?'Pilihan: <b>'+cname(cb)+'</b>':'Pilihan belum membentuk kombinasi'):'Ketuk kartu untuk memilih'}</div><div class="acts"><button class="go" onclick="act('play',sel)"${cb?'':' disabled'}>Banting</button><button class="ghost" onclick="act('pass')"${V.table?'':' disabled'}>Pass</button></div>`;
+      else bar=`<div class="status">Giliran ${esc(P[V.turn]?P[V.turn].name:'')}...</div>`}
+    else bar=host?`<button class="go" onclick="act('next')">${V.round>=V.rounds?'Lihat hasil akhir':'Ronde berikutnya'}</button>`:`<div class="status">Menunggu host...</div>`}
+  h+=`<p style="margin-top:18px"><button class="link" onclick="leave()">Keluar dari room</button> &nbsp; <button class="link" onclick="tgm()">Suara: ${mute?'mati':'nyala'}</button></p><div class="bar"><div>${bar}</div></div>`;
+  a.innerHTML=h}
+render();
+</script></body></html>
